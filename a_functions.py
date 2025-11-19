@@ -110,7 +110,22 @@ def get_correct_email(email_list: list[str]) -> list[str]:
 print(get_correct_email(test_emails))
 
 # 8. Создание словаря письма - создает базовую структуру письма
-#
+email = {
+    "to": "elinka@malinka.ru",
+    "from": "angelinka@kolbaska.ru",
+    "subject": "pismo pishu",
+    "date": "2025-11-19",
+    "body": "I dont understand the difference between email body and email text"
+}
+def create_email(sender, recipient, subject, body):
+    return {
+        'sender': sender,
+        'recipient': recipient,
+        'subject': subject,
+        'body': body
+    }
+print(create_email(email["to"], email["from"], email["subject"], email["body"]))
+
 # 9. Добавление даты отправки - добавляет текущую дату
 
 #10. Получение логина и домена - разделяет email на логин и домен
