@@ -1,4 +1,8 @@
+from datetime import date
+
 # 1. Нормализация email адресов - приводит адреса к нижнему регистру и убирает пробелы
+from datetime import date
+
 test_emails = [
     " hello@test.com  ",
     "User@user.net",
@@ -127,5 +131,21 @@ def create_email(sender, recipient, subject, body):
 print(create_email(email["to"], email["from"], email["subject"], email["body"]))
 
 # 9. Добавление даты отправки - добавляет текущую дату
+
+email = {
+    "to": "elinka@malinka.ru",
+    "from": "angelinka@kolbaska.ru",
+    "subject": "pismo pishu1",
+    "date": "",
+    "body": "I dont understand the difference between email body and email text"
+}
+
+def add_send_date(email: dict) -> dict:
+    email["date"] = date.today().isoformat()
+    return email
+
+print(email)
+print(add_send_date(email))
+
 
 #10. Получение логина и домена - разделяет email на логин и домен
