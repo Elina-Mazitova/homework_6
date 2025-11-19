@@ -10,6 +10,11 @@ for email in test_emails:
     print(normalize_addresses(email))
 
 # 2. Сокращенная версия тела письма - создает короткую версию тела (первые 10 символов + "...")
+email_body = 'I wrote text to check ability to show only ten symbols of message'
+
+def add_short_body(value: str) -> str:
+    return value.strip()[:10]+"..."
+print(add_short_body(email_body))
 
 # 3. Очистка текста письма - заменяет табы и переводы строк на пробелы
 #
