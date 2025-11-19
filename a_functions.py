@@ -41,7 +41,27 @@ def build_sent_text(email: dict) -> str:
 print(build_sent_text(email))
 
 # 5. Проверка пустоты темы и тела - проверяет, заполнены ли обязательные поля
-#
+
+email = {
+    "to": "elinka@malinka.ru",
+    "from": "angelinka@kolbaska.ru",
+    "subject": "",
+    "date": "2025-11-19",
+    "body": "I dont understand the difference between email body and email text"
+}
+
+def check_empty_fields(email: dict) -> tuple[bool, bool]:
+    is_subject_empty = not email["subject"].strip()
+    is_body_empty = not email["body"].strip()
+
+    return is_subject_empty, is_body_empty
+
+is_subject_empty, is_body_empty = check_empty_fields(email)
+
+print("Пустая тема:", is_subject_empty)
+print("Пустое тело:", is_body_empty)
+
+
 # 6. Маска email отправителя - создает маскированную версию email (первые 2 символа + "***@" + домен)
 #
 # 7. Проверка корректности email - проверяет наличие @ и допустимые домены (.com, .ru, .net)
