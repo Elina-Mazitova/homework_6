@@ -61,9 +61,22 @@ is_subject_empty, is_body_empty = check_empty_fields(email)
 print("Пустая тема:", is_subject_empty)
 print("Пустое тело:", is_body_empty)
 
-
 # 6. Маска email отправителя - создает маскированную версию email (первые 2 символа + "***@" + домен)
-#
+
+email = {
+    "to": "elinka@malinka.ru",
+    "from": "angelinka@kolbaska.ru",
+    "subject": "pishu pismo",
+    "date": "2025-11-19",
+    "body": "I dont understand the difference between email body and email text"
+}
+
+def mask_sender_email(sender: str) -> str:
+
+    local, domain = sender.split("@", 1)
+    return local[:2] + "***@" + domain
+print(mask_sender_email(email["from"]))
+
 # 7. Проверка корректности email - проверяет наличие @ и допустимые домены (.com, .ru, .net)
 #
 # 8. Создание словаря письма - создает базовую структуру письма
