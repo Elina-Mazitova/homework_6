@@ -24,7 +24,22 @@ def clean_body_text(body: str) -> str:
 print(clean_body_text(email_text))
 
 # 4. Формирование итогового текста письма - создает форматированный текст письма
-#
+
+email = {
+    "to": "elinka@malinka.ru",
+    "from": "angelinka@kolbaska.ru",
+    "subject": "pismo pishu",
+    "date": "2025-11-19",
+    "body": "I dont understand the difference between email body and email text"
+}
+
+def build_sent_text(email: dict) -> str:
+    return (f"Кому: {email['to']}, От: {email['from']}\n"
+            f"Тема: {email['subject']}, Дата: {email['date']}\n"
+            f"{clean_body_text(email['body'])}")
+            
+print(build_sent_text(email))
+
 # 5. Проверка пустоты темы и тела - проверяет, заполнены ли обязательные поля
 #
 # 6. Маска email отправителя - создает маскированную версию email (первые 2 символа + "***@" + домен)
