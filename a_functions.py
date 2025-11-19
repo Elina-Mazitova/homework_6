@@ -149,3 +149,18 @@ print(add_send_date(email))
 
 
 #10. Получение логина и домена - разделяет email на логин и домен
+
+email = {
+    "to": "elinka@malinka.ru",
+    "from": "angelinka@kolbaska.ru",
+    "subject": "pismo pishu1",
+    "date": "",
+    "body": "I dont understand the difference between email body and email text"
+}
+
+def extract_login_domain(address: str) -> tuple[str, str]:
+    login, domain = address.split("@", 1)
+    return login, domain
+
+print(extract_login_domain(email["to"]))
+print(extract_login_domain(email["from"]))
