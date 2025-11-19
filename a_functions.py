@@ -164,3 +164,64 @@ def extract_login_domain(address: str) -> tuple[str, str]:
 
 print(extract_login_domain(email["to"]))
 print(extract_login_domain(email["from"]))
+
+
+#Задание B
+def sender_email(recipient_list: list[str], subject: str, message: str, *, sender="default@study.com") -> list[dict]:
+    # 1. Проверить, что recipient_list не пустой.
+    if not recipient_list:
+        return []
+
+    # 2. Проверить корректность email отправителя и получателей
+    valid_recipients = get_correct_email(recipient_list)
+    valid_sender_list = get_correct_email([sender])
+    if not valid_recipients or not valid_sender_list:
+        return []
+
+    sender = valid_sender_list[0]
+
+    # 3. Проверить пустоту темы и тела письма
+    if not subject.strip() or not message.strip():
+        return []
+
+    # 4. Исключить отправку самому себе
+    valid_recipients = [r for r in valid_recipients if r != sender]
+
+    # 5. Нормализация
+    subject = clean_body_text(subject)
+    body = clean_body_text(message)
+    valid_recipients = [normalize_addresses(r) for r in valid_recipients]
+    sender = normalize_addresses(sender)
+
+    emails = []
+    for recipient in valid_recipients:
+        # 6. Создать письмо
+        email = create_email(sender, recipient, subject, body)
+
+        # 7. Добавить дату отправки
+        email = add_send_date(email)
+
+        # 8. Замаскировать email отправителя
+        login, domain = extract_login_domain(sender)
+        email["masked_sender"] = mask_sender_email(sender)
+
+        # 9. Сохранить короткую версию тела
+        email["short_body"] = body[:10] + "..."
+
+        # 10. Сформировать итоговый текст письма
+        # адаптируем build_sent_text под ключи sender/recipient
+        email["sent_text"] = (
+            f"Кому: {email['recipient']}, от {email['sender']}\n"
+            f"Тема: {email['subject']}, дата {email['date']}\n"
+            f"{email['short_body']}"
+        )
+        emails.append(email)
+    return emails
+result = sender_email(
+    recipient_list=["admin@company.ru", "test_123@service.net", "default@study.com"],
+    subject="Hello!",
+    message="Привет, коллега!"
+)
+
+for r in result:
+    print(r["sent_text"])
