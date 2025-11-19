@@ -72,13 +72,43 @@ email = {
 }
 
 def mask_sender_email(sender: str) -> str:
-
     local, domain = sender.split("@", 1)
     return local[:2] + "***@" + domain
 print(mask_sender_email(email["from"]))
 
 # 7. Проверка корректности email - проверяет наличие @ и допустимые домены (.com, .ru, .net)
-#
+
+test_emails = [
+    # Корректные адреса
+    "user@gmail.com",
+    "admin@company.ru",
+    "test_123@service.net",
+    "Example.User@domain.com",
+    "default@study.com",
+    " hello@corp.ru  ",
+    "user@site.NET",
+    "user@domain.coM",
+    "user.name@domain.ru",
+    "usergmail.com",
+    "user@domain",
+    "user@domain.org",
+    "@mail.ru",
+    "name@.com",
+    "name@domain.comm",
+    "",
+    "   ",
+]
+
+def get_correct_email(email_list: list[str]) -> list[str]:
+    correct_emails = []
+    for email in email_list:
+        clean_email = email.strip().lower()
+        if "@" in clean_email and clean_email.endswith((".com", ".ru", ".net")):
+            correct_emails.append(clean_email)
+    return correct_emails
+
+print(get_correct_email(test_emails))
+
 # 8. Создание словаря письма - создает базовую структуру письма
 #
 # 9. Добавление даты отправки - добавляет текущую дату
