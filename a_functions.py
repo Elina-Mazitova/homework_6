@@ -17,7 +17,12 @@ def add_short_body(value: str) -> str:
 print(add_short_body(email_body))
 
 # 3. Очистка текста письма - заменяет табы и переводы строк на пробелы
-#
+email_text = "I dont understand\tthe difference\nbetween email body and email text"
+
+def clean_body_text(body: str) -> str:
+    return body.replace('\t', ' ').replace('\n', ' ')
+print(clean_body_text(email_text))
+
 # 4. Формирование итогового текста письма - создает форматированный текст письма
 #
 # 5. Проверка пустоты темы и тела - проверяет, заполнены ли обязательные поля
