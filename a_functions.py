@@ -181,8 +181,10 @@ def sender_email(recipient_list: list[str], subject: str, message: str, *, sende
     sender = valid_sender_list[0]
 
     # 3. Проверить пустоту темы и тела письма
-    if not subject.strip() or not message.strip():
-        return []
+    def check_empty_fields(subject: str, body: str) -> tuple[bool, bool]:
+        is_subject_empty = not subject.strip()
+        is_body_empty = not body.strip()
+        return is_subject_empty, is_body_empty
 
     # 4. Исключить отправку самому себе
     valid_recipients = [r for r in valid_recipients if r != sender]
