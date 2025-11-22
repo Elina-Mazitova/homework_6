@@ -16,9 +16,9 @@ for email in test_emails:
 # 2. Сокращенная версия тела письма - создает короткую версию тела (первые 10 символов + "...")
 email_body = 'I wrote text to check ability to show only ten symbols of message'
 
-def add_short_body(value: str) -> str:
-    return value.strip()[:10]+"..."
-print(add_short_body(email_body))
+def add_short_body(email: dict) -> dict:
+    email["short_body"] = email["body"].strip()[:10] + "..."
+    return email
 
 # 3. Очистка текста письма - заменяет табы и переводы строк на пробелы
 email_text = "I dont understand\tthe difference\nbetween email body and email text"
@@ -54,7 +54,7 @@ email = {
     "body": "I dont understand the difference between email body and email text"
 }
 
-def check_empty_fields(email: dict) -> tuple[bool, bool]:
+def check_empty_fields(email: dict) -> dict:
     is_subject_empty = not email["subject"].strip()
     is_body_empty = not email["body"].strip()
 
@@ -181,10 +181,10 @@ def sender_email(recipient_list: list[str], subject: str, message: str, *, sende
     sender = valid_sender_list[0]
 
     # 3. Проверить пустоту темы и тела письма
-    def check_empty_fields(subject: str, body: str) -> tuple[bool, bool]:
-        is_subject_empty = not subject.strip()
-        is_body_empty = not body.strip()
-        return is_subject_empty, is_body_empty
+    email = {"subject": subject, "body": message}
+    is_subject_empty, is_body_empty = check_empty_fields(email)
+    if is_subject_empty or is_body_empty:
+        return []
 
     # 4. Исключить отправку самому себе
     valid_recipients = [r for r in valid_recipients if r != sender]
@@ -208,15 +208,18 @@ def sender_email(recipient_list: list[str], subject: str, message: str, *, sende
         email["masked_sender"] = mask_sender_email(sender)
 
         # 9. Сохранить короткую версию тела
-        email["short_body"] = body[:10] + "..."
+        email = add_short_body(email)
 
         # 10. Сформировать итоговый текст письма
         # адаптируем build_sent_text под ключи sender/recipient
-        email["sent_text"] = (
-            f"Кому: {email['recipient']}, от {email['sender']}\n"
-            f"Тема: {email['subject']}, дата {email['date']}\n"
-            f"{email['short_body']}"
-        )
+        temp_email = {
+            "to": email["recipient"],
+            "from": email["sender"],
+            "subject": email["subject"],
+            "date": email["date"],
+            "body": email["short_body"]
+        }
+        email["sent_text"] = build_sent_text(temp_email)
         emails.append(email)
     return emails
 result = sender_email(
